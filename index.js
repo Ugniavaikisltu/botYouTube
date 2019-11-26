@@ -8,6 +8,14 @@ client.on('ready', () => {
     client.user.setActivity("%help", { type: "WATCHING" });
 });
 
+client.on("guildMemberAdd", member => {
+    var embed = new Discord.RichEmbed()
+    .setColor("#2eff00")
+    .setTitle("Bienvenue !")
+    .setDescription("Bievenue " + member + " !")
+    member.guild.channels.get("634477535001968650").send(embed)
+})
+
 client.on('message', async message => {
     let args = message.content.trim().split(/ +/g)
 
