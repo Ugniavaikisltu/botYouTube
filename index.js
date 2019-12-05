@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 var config = require('./config.json')
 const client = new Discord.Client();
+const fs = require('fs')
+let xp = JSON.parse(fs.readFileSync('./xp.json', 'utf8'))
 var prefix = config.Prefix
 
 client.on('ready', () => {
@@ -72,6 +74,44 @@ client.on('message', async message => {
         message.guild.member(membre).ban(membre)
         message.channel.send("✅ " + membre + " a ete ban")
     }
+// commande rank
+    if (args[0].toLocaleLowerCase() === prefix + 'rank') {
+        let user = message.mentions.users.first() || message.author
+        let uXp = xp[user.id].xp
+        let uAvatar = user.avatarURL
+        var embed = new Discord.RichEmbed()
+        .setTitle("xp de " + user.username + " :")
+        .setThumbnail(uAvatar)
+        .setDescription("GG " + user + ' tu a accumulé **' + uXp + "** points d'XP ! :clap:")
+        message.channel.send(embed)
+        return
+    }
+
+if (message.content === message.content) {
+
+    if (!xp[message.author.id]) {
+        xp[message.author.id] = {
+            xp: 0
+        }
+    }
+
+    var xptemp1 = Math.floor(Math.random() * 3) + 1
+    var xptemp2 = Math.floor(Math.random() * 3) + 1
+
+    console.log(xptemp1 + ":" + xptemp2)
+
+    if (xptemp1 != xptemp2) return
+
+    xp[message.author.id].xp = xp[message.author.id].xp
+    xp[message.author.id] = {
+        xp: xp[message.author.id].xp + xptemp1
+    }
+    fs.writeFile("./xp.json", JSON.stringify(xp, null, 4), err => {
+        if (err) throw err;
+    });
+    console.log("créé avec succes")
+    return
+}
 
 });
 client.login(config.Token);
