@@ -113,6 +113,26 @@ client.on('message', async message => {
         return
     }
 
+    // del
+    if (args[0].toLocaleLowerCase() === prefix + 'del') {
+        let count = args[1]
+        if (!count) return message.channel.send("veuillez indiquer un nombre de message a supprimer")
+        if (isNaN(count)) message.channel.send("veuillez indiquer un nombre valide")
+        if (count < 1 || count > 100) return message.channel.send("veuillez indiquer un nombre entre 1 et 100")
+        message.channel.bulkDelete(parseInt(count) + 1)
+    }
+
+    // embed personnalisé
+    if (args[0].toLocaleLowerCase() === prefix + 'embed') {
+        let colorP = args.slice(1).join(" ");
+        let textP = args.slice(2).join(" ");
+        if (!textP) return message.channel.send(" entre du texte")
+        var embedP = new Discord.RichEmbed()
+        .setColor(colorP)
+        .setDescription(textP)
+        message.channel.send(embedP)
+    }
+
     //add rank
     if (message.content === message.content) {
 
@@ -139,6 +159,8 @@ client.on('message', async message => {
         console.log("créé avec succes")
         return
     }
+
+   
 
 });
 client.login(config.Token);
