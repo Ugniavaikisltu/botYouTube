@@ -8,7 +8,9 @@ var prefix = config.Prefix
 
 client.on('ready', () => {
     console.log('pret !')
-    client.user.setActivity("%help", { type: "WATCHING" });
+    client.user.setActivity("%help", {
+        type: "WATCHING"
+    });
 });
 
 client.on("guildMemberAdd", member => {
@@ -25,7 +27,8 @@ client.on("guildMemberAdd", member => {
         member.guild.channels.get("634477535001968650").send(member + " est dans la blacklist, ila donc été banni definitivement.")
         member.ban()
         return
-    } return
+    }
+    return
     var embed = new Discord.RichEmbed()
         .setColor("#2eff00")
         .setTitle("Bienvenue !")
@@ -99,19 +102,29 @@ client.on('message', async message => {
 
     //stream
     if (message.content === prefix + "stream") {
-        client.user.setPresence({ game: { name: '%help !', type: "STREAMING", url: "https://twitch.tv/%24" } });
+        client.user.setPresence({
+            game: {
+                name: '%help !',
+                type: "STREAMING",
+                url: "https://twitch.tv/%24"
+            }
+        });
         message.channel.send("mon status a bien été changer en `stream %help !`")
     }
 
     //regarde
     if (message.content === prefix + "regarde") {
-        client.user.setActivity("%help !", { type: "WATCHING" });
+        client.user.setActivity("%help !", {
+            type: "WATCHING"
+        });
         message.channel.send("mon status a bien été changer en `regarde %help !`")
     }
 
     //ecoute 
     if (message.content === prefix + "ecoute") {
-        client.user.setActivity("%help !", { type: "LISTENING" });
+        client.user.setActivity("%help !", {
+            type: "LISTENING"
+        });
         message.channel.send("mon status a bien été changer en `ecoute %help !`")
     }
 
@@ -163,7 +176,45 @@ client.on('message', async message => {
         message.channel.send(blU.username + " a bien été blacklist :skull_crossbones: !")
     }
 
+    if (args[0].toLocaleLowerCase() === prefix + "tts") {
+        var text = args.slice(1).join(" ")
+        if (!text) return
 
+        var text = text.replace(`?`,"")
+        var text = text.replace(`/`, "")
+        var text = text.replace(`*`, "")
+        var text = text.replace(`;`, "")
+        var text = text.replace(`:`, "")
+        var text = text.replace(`<`, "")
+        var text = text.replace(`>`, "")
+        var text = text.replace(`|`, "")
+
+        const request = require("request")
+        const options = {
+            url: `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=fr&client=tw-ob`,
+            headers: {
+                'Referer': 'http://translate.google.com/',
+                'User-Agent': 'stagefright/1.2 (Linux;Android 5.0)'
+            }
+        }
+
+        request(options)
+            .pipe(fs.createWriteStream("audioMsc/" + text + ".mp3"))
+
+        function deleteAudio() {
+            fs.unlinkSync("audioMsc/" + text + ".mp3")
+        }
+
+        function sendAudio() {
+            message.channel.send({
+                files: [
+                    "audioMsc/" + text + ".mp3"
+                ]
+            })
+            setTimeout(deleteAudio, 2000)
+        }
+        setTimeout(sendAudio, 1000)
+     }
 
     //add rank
     if (message.content === message.content) {
