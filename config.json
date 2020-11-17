@@ -1,11 +1,11 @@
 {
-    "Token": "Ton Token",
-    "Prefix": "Ton Prefix",
+    "Token": "Nzc1MzU4MzYxMTAxMDA4ODk3.X6lKvg.u6Tqx-x7bphecuclshuX5XKOCsE",
+    "Prefix": "/",
     
      "servers": [
-        "ID DU SERVER"
+        "766210477918650373"
     ],
-    "roleName": "ID DU ROLE",
+    "roleName": "778164780715868170",
     "colors": 5,
     "speed": 2000,
     "logging": true
